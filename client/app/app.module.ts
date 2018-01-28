@@ -38,7 +38,8 @@ import { environment } from './../environments/environment';
     RoutingModule,
     SharedModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.GMAP_API
+      apiKey: environment.GMAP_API,
+      libraries: ["places"]
     })
   ],
   providers: [

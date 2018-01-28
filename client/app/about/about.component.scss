@@ -12,3 +12,42 @@ agm-map {
     padding-left: 0;
   }
 }
+
+.postal-code-form {
+  text-align: center;
+}
+
+.has-text-centered {
+  text-align: center;
+}
+
+.doctor-list {
+  margin: 20px 10px;
+
+  .card {
+    margin-bottom: 0;
+    border-radius: 0;
+    padding: 20px;
+  }
+
+  .highlight {
+    border: 3px solid black;
+  }
+}
+
+.label {
+  font-weight: 700;
+}
+
+.properties {
+  display: inline-block;
+}
+
+.appointmentbtn {
+  display: inline-block;
+  float: right;
+}
+
+.modal-style {
+  margin: 20px;
+}

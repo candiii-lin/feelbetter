@@ -1,10 +1,78 @@
+<div class="row">
+  <app-toast [message]="toast.message"></app-toast>
+</div>
 <div class="row no-gutters">
   <div class="col-md-6">
+    <!-- <div class="input-group">
+      <input type="text" class="form-control" placeholder="Postal Code">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">Search</button>
+      </div>
+    </div> -->
+    <form class="postal-code-form" (ngSubmit)="limitPostalCode()">
+      <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl" name="searchControl">
+    </form>
+
+    <div class="doctor-list">
+      <div class="doctor card" *ngFor="let doctor of displayedDoctor; let index = index" [ngClass]="{'highlight': index == displayIndex}">
+        <div class="appointmentbtn">
+          <button class="btn btn-primary float-right" (click)="openContactModal(index)">Contact Clinic</button>
+        </div>
+        <div class="properties">
+          <div class="doctor-properties">
+            <span class="label">Name: </span>{{doctor.name}}
+          </div>
+          <div class="doctor-properties">
+            <span class="label">Gender: </span>{{doctor.gender}}
+          </div>
+          <div class="doctor-properties">
+            <span class="label">Address: </span>{{doctor.address.formatted}}
+          </div>
+          <div class="doctor-properties">
+            <span class="label">Telephone: </span>{{doctor.telephone}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-xs-12 col-12 has-text-centered" *ngIf="doctors">
+      <pagination [totalItems]="doctors.length"
+        [(ngModel)]="currentPage" [maxSize]="maxSize"
+        [boundaryLinks]="true" (pageChanged)="pageChanged($event)"
+        [itemsPerPage]="displayPerPage" [rotate]="false" (numPages)="numPages = $event"></pagination>
+    </div>
 
   </div>
   <div class="col-md-6">
-    <agm-map [latitude]="lat" [longitude]="lng">
-      <agm-marker *ngFor="let doctor of doctors; let index = index" [latitude]="doctor.address.location.lat" [longitude]="doctor.address.location.lng" (mouseOver)="hoverInfo(index)" [title]="doctor_id"></agm-marker>
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+      <agm-marker *ngFor="let doctor of doctors; let index = index"
+      [latitude]="doctor.address.location.lat" [longitude]="doctor.address.location.lng"
+      (markerClick)="hoverInfo(index)" [title]="doctor_id"></agm-marker>
+      <agm-marker [latitude]="lat" [longitude]="lng" [label]="'A'" [markerDraggable]="true" (dragEnd)="draggedMarker($event)"></agm-marker>
+      <agm-circle [latitude]="lat" [longitude]="lng" [radius]="1000"  [fillColor]="'red'">
+    </agm-circle>
     </agm-map>
   </div>
 </div>
+
+<ngx-smart-modal #myModal [identifier]="'Appointment'" (onClose)="onCloseModal()">
+  <div class="modal-style">
+    <div *ngIf="selectedDoctor">
+      <h3>Contact {{ selectedDoctor.name }}</h3>
+      <div class="form-group row">
+        <label for="example-text-input" class="col-2 col-form-label label">Name</label>
+        <div class="col-10">
+          <input class="form-control" type="text" placeholder="John Smith" id="example-text-input" [(ngModel)]="name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="example-tel-input" class="col-2 col-form-label label">Telephone</label>
+        <div class="col-10">
+          <input class="form-control" type="tel" placeholder="(555)-555-5555" id="example-tel-input" [(ngModel)]="tel">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" (click)="myModal.close()">Submit</button>
+</ngx-smart-modal>
