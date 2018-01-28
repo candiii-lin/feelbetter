@@ -4,5 +4,6 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  GMAP_API: "AIzaSyCxEQ8hpEF3t-tHAc4EZ7x_9CCBW5feFME"
 };
